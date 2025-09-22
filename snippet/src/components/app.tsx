@@ -78,7 +78,7 @@ import {
   thumbnailsRender,
   zoomRenderer,
   ZoomRendererProps,
-  printModalRenderer,
+  // printModalRenderer, //
 } from './renderers';
 import { leftPanelAnnotationStyleRenderer } from './annotation-sidebar';
 import {
@@ -133,7 +133,7 @@ import {
   getToolDefaultsById,
 } from '@embedpdf/plugin-annotation/preact';
 import { LoadingIndicator } from './ui/loading-indicator';
-import { PrintPluginConfig, PrintPluginPackage } from '@embedpdf/plugin-print/preact';
+// import { PrintPluginConfig, PrintPluginPackage } from '@embedpdf/plugin-print/preact'; //
 import {
   FULLSCREEN_PLUGIN_ID,
   FullscreenPlugin,
@@ -273,35 +273,9 @@ export const menuItems: Record<string, MenuItem<State>> = {
     //shortcut: 'Shift+M',
     //shortcutLabel: 'M',
     type: 'menu',
-    children: ['openFile', 'download', 'enterFS', 'screenshot', 'print'],
+    children: [ 'enterFS', 'screenshot'],
     active: (storeState) =>
       storeState.plugins.ui.commandMenu.commandMenu.activeCommand === 'menuCtr',
-  },
-  download: {
-    id: 'download',
-    icon: 'download',
-    label: 'Download',
-    //shortcut: 'Shift+D',
-    //shortcutLabel: 'D',
-    type: 'action',
-    action: (registry) => {
-      const exportPlugin = registry.getPlugin<ExportPlugin>(EXPORT_PLUGIN_ID)?.provides();
-      if (exportPlugin) {
-        exportPlugin.download();
-      }
-    },
-  },
-  openFile: {
-    id: 'openFile',
-    icon: 'fileImport',
-    label: 'Open PDF',
-    type: 'action',
-    action: (registry) => {
-      const loader = registry.getPlugin<LoaderPlugin>(LOADER_PLUGIN_ID)?.provides();
-      if (loader) {
-        loader.openFileDialog();
-      }
-    },
   },
   enterFS: {
     id: 'enterFS',
@@ -358,26 +332,6 @@ export const menuItems: Record<string, MenuItem<State>> = {
     type: 'action',
     action: () => {
       console.log('save');
-    },
-  },
-  print: {
-    id: 'print',
-    icon: 'print',
-    label: 'Print',
-    //shortcut: 'Shift+P',
-    //shortcutLabel: 'P',
-    type: 'action',
-    action: (registry, state) => {
-      const ui = registry.getPlugin<UIPlugin>(UI_PLUGIN_ID)?.provides();
-      if (ui) {
-        ui.updateComponentState({
-          componentType: 'floating',
-          componentId: 'printModal',
-          patch: {
-            open: true,
-          },
-        });
-      }
     },
   },
   settings: {
@@ -2155,14 +2109,6 @@ export const components: Record<string, UIComponentType<State>> = {
       img: 'data:image/svg+xml;base64,PHN2ZyAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiAgd2lkdGg9IjI0IiAgaGVpZ2h0PSIyNCIgIHZpZXdCb3g9IjAgMCAyNCAyNCIgIGZpbGw9Im5vbmUiICBzdHJva2U9IiMzNDNhNDAiICBzdHJva2Utd2lkdGg9IjIiICBzdHJva2UtbGluZWNhcD0icm91bmQiICBzdHJva2UtbGluZWpvaW49InJvdW5kIiAgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbi10YWJsZXItb3V0bGluZSBpY29uLXRhYmxlci1maWxlLWltcG9ydCI+PHBhdGggc3Ryb2tlPSJub25lIiBkPSJNIDAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0xNCAzdjRhMSAxIDAgMCAwIDEgMWg0IiAvPjxwYXRoIGQ9Ik01IDEzdi04YTIgMiAwIDAgMSAyIC0yaDdsNSA1djExYTIgMiAwIDAgMSAtMiAyaC01LjVtLTkuNSAtMmg3bS0zIC0zbDMgM2wtMyAzIiAvPjwvc3ZnPg==',
     },
   },
-  downloadButton: {
-    type: 'iconButton',
-    id: 'downloadButton',
-    props: {
-      label: 'Download',
-      img: 'data:image/svg+xml;base64,PHN2ZyAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiAgd2lkdGg9IjI0IiAgaGVpZ2h0PSIyNCIgIHZpZXdCb3g9IjAgMCAyNCAyNCIgIGZpbGw9Im5vbmUiICBzdHJva2U9IiMzNDNhNDAiICBzdHJva2Utd2lkdGg9IjIiICBzdHJva2UtbGluZWNhcD0icm91bmQiICBzdHJva2UtbGluZWpvaW49InJvdW5kIiAgY2xhc3M9Imljb24gaWNvbi10YWJsZXIgaWNvbnMtdGFibGVyLW91dGxpbmUgaWNvbi10YWJsZXItZG93bmxvYWQiPjxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik00IDE3djJhMiAyIDAgMCAwIDIgMmgxMmEyIDIgMCAwIDAgMiAtMnYtMiIgLz48cGF0aCBkPSJNNyAxMWw1IDVsNSAtNSIgLz48cGF0aCBkPSJNMTIgNGwwIDEyIiAvPjwvc3ZnPg==',
-    },
-  },
   zoomButton: {
     type: 'iconButton',
     id: 'zoomButton',
@@ -2441,22 +2387,6 @@ export const components: Record<string, UIComponentType<State>> = {
     props: {
       gap: 10,
     },
-  },
-  printModal: {
-    id: 'printModal',
-    type: 'floating',
-    render: 'printModal',
-    initialState: {
-      open: false,
-    },
-    props: (initialState) => ({
-      open: initialState.open,
-      scrollerPosition: 'outside',
-    }),
-    mapStateToProps: (storeState, ownProps) => ({
-      ...ownProps,
-      open: storeState.plugins.ui.floating.printModal.open,
-    }),
   },
   textSelectionMenu: {
     id: 'textSelectionMenu',
@@ -2843,7 +2773,7 @@ export function PDFViewer({ config }: PDFViewerProps) {
             uiCapability.registerComponentRenderer('selectButton', selectButtonRenderer);
             uiCapability.registerComponentRenderer('textSelectionMenu', textSelectionMenuRenderer);
             uiCapability.registerComponentRenderer('leftPanelMain', leftPanelMainRenderer);
-            uiCapability.registerComponentRenderer('printModal', printModalRenderer);
+           // uiCapability.registerComponentRenderer('printModal', printModalRenderer); //
             uiCapability.registerComponentRenderer(
               'leftPanelAnnotationStyle',
               leftPanelAnnotationStyleRenderer,
@@ -2873,7 +2803,7 @@ export function PDFViewer({ config }: PDFViewerProps) {
           createPluginRegistration(TilingPluginPackage, pluginConfigs.tiling),
           createPluginRegistration(ThumbnailPluginPackage, pluginConfigs.thumbnail),
           createPluginRegistration(AnnotationPluginPackage),
-          createPluginRegistration(PrintPluginPackage),
+          // createPluginRegistration(PrintPluginPackage), //
           createPluginRegistration(FullscreenPluginPackage),
           createPluginRegistration(BookmarkPluginPackage),
           createPluginRegistration(ExportPluginPackage),

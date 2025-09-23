@@ -1,17 +1,7 @@
 'use client'
 
 import React from 'react'
-import {
-  ArrowRight,
-  MergeIcon,
-  EditIcon,
-  Shield,
-  Github,
-  Lock,
-  Eye,
-  Server,
-  Cookie,
-} from 'lucide-react'
+import { ArrowRight, MergeIcon, EditIcon, FileText } from 'lucide-react'
 import { Scribble3 } from './icons/scribble3'
 import { PrivacyStatement } from './tools/shared/privacy-statement'
 import Link from 'next/link'
@@ -32,6 +22,13 @@ const tools = [
     icon: <EditIcon className="h-6 w-6 text-white" />,
     href: '/tools/pdf-metadata-editor',
     color: 'from-purple-600 to-pink-700',
+  },
+  {
+    title: 'PDF Outline Editor',
+    description: 'Create and edit PDF bookmarks and navigation structure',
+    icon: <FileText className="h-6 w-6 text-white" />,
+    href: '/tools/pdf-outline-editor',
+    color: 'from-teal-600 to-green-700',
   },
   // Add more tools here as they are created
 ]
